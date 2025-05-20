@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aedrieu's Fashion World</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 90%;
+      max-width: 800px;
+      height: auto;
+      min-height: 400px;
+      display: flex;
+      flex-wrap: wrap;
+      background: white;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+    .sign-in, .welcome {
+      width: 100%;
+      padding: 30px;
+    }
+    @media (min-width: 768px) {
+      .sign-in, .welcome {
+        width: 50%;
+        padding: 40px;
+      }
+    }
+    .sign-in {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .sign-in h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .input-group {
+      position: relative;
+      margin: 10px 0;
+    }
+    .sign-in input {
+      padding: 12px 40px 12px 12px;
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: border 0.3s;
+    }
+    .sign-in input:focus {
+      border-color: #f85a79;
+      outline: none;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #777;
+    }
+    .sign-in a {
+      color: #777;
+      font-size: 13px;
+      text-decoration: none;
+      margin: 5px 0 15px;
+      display: inline-block;
+    }
+    .sign-in a:hover {
+      color: #f85a79;
+    }
+    .sign-in button {
+      padding: 12px;
+      border: none;
+      background-color: #f85a79;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+    .sign-in button:hover {
+      background-color: #e04a69;
+    }
+    .welcome {
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .welcome h2 {
+      margin-bottom: 15px;
+    }
+    .welcome p {
+      margin-bottom: 20px;
+      opacity: 0.9;
+    }
+    .welcome button {
+      padding: 10px 25px;
+      background: transparent;
+      border: 1px solid white;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .welcome button:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    #message {
+      color: #f85a79;
+      font-size: 14px;
+      height: 20px;
+      margin-bottom: 5px;
+    }
+    
+    /* Product Showcase Styles */
+    .product-showcase {
+      display: none;
+      width: 100%;
+      padding: 30px;
+      background: white;
+      position: relative;
+    }
+    .carousel {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+    .slides {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    .slide {
+      min-width: 100%;
+      padding: 10px;
+    }
+    .product {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .product:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .product img {
+      width: 100%;
+      height: 180px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+    .product h3 {
+      margin: 10px 0 5px;
+      color: #333;
+    }
+    .product p {
+      color: #f85a79;
+      font-weight: bold;
+      margin: 0;
+    }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+      font-size: 18px;
+    }
+    .prev {
+      left: 10px;
+    }
+    .next {
+      right: 10px;
+    }
+    .logout-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #f85a79;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+    .logout-btn:hover {
+      background: #e04a69;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Login Section -->
+    <div class="sign-in">
+      <h2>Sign In</h2>
+      <div id="message"></div>
+      <div class="input-group">
+        <input id="username" type="text" placeholder="Username" value="Aedrieu11" />
+      </div>
+      <div class="input-group">
+        <input id="password" type="password" placeholder="Password" value="deu1234" />
+        <span class="toggle-password" onclick="togglePassword()">👁️</span>
+      </div>
+      <a href="#">Forgot your password?</a>
+      <button onclick="login()">Sign In</button>
+    </div>
+    <div class="welcome">
+      <h2>Hello! Welcome to Aedrieu's Fashion World</h2>
+      <p>Enter your credentials to see our exclusive collection</p>
+      <button>Sign Up</button>
+    </div>
+    
+    <!-- Product Showcase (hidden until login) -->
+    <div class="product-showcase" id="showcase">
+      <h2>Welcome to Your Exclusive Collection</h2>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+      
+      <div class="carousel">
+        <button class="carousel-btn prev" onclick="moveSlide(-1)">❮</button>
+        <button class="carousel-btn next" onclick="moveSlide(1)">❯</button>
+        <div class="slides" id="slides">
+          <!-- Slide 1 (Shoes & Caps) -->
+          <div class="slide">
+            <div class="products">
+              <div class="product">
+                <img src="https://cdn-images.farfetch-contents.com/25/08/66/11/25086611_55315876_600.jpg">
+                <h3>Nike Air Max 270</h3>
+                <p>$160</p>
+              </div>
+              <div class="product">
+                <img src="https://neweracap.ph/cdn/shop/files/60588204_02265204_2_1000x.jpg?v=1744307504">
+                <h3>New Era 9FIFTY</h3>
+                <p>$38</p>
+              </div>
+              <div class="product">
+                <img src="https://freshsociety.co/cdn/shop/files/s-l1200_82ab0f16-5f98-4b76-b279-6fffa3826f04.jpg?v=1713225064">
+                <h3>Chrome Hearts Tee</h3>
+                <p>$350</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Slide 2 (Bracelets & Necklaces) -->
+          <div class="slide">
+            <div class="products">
+              <div class="product">
+                <img src="https://pandora.lucerneluxe.com/cdn/shop/products/HIGH_CMYK_592561C01_CMYK_530x@2x.jpg?v=1735142660">
+                <h3>Pandora Shine Bracelet</h3>
+                <p>$120</p>
+              </div>
+              <div class="product">
+                <img src="https://russelljewellers.com/cdn/shop/products/GDE250RH_2048x.jpg?v=1583604831">
+                <h3>Silver Cuban Chain</h3>
+                <p>$85</p>
+              </div>
+              <div class="product">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-zvdIYCMV372DBRCDSK14PXvJrz94ASHNIA&s">
+                <h3>Unisilver Necklace Men</h3>
+                <p>$250</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.getElementById('slides');
+    const totalSlides = document.querySelectorAll('.slide').length;
+
+    function moveSlide(direction) {
+      currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+      slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const message = document.getElementById('message');
+      
+      if(username === "Aedrieu11" && password === "deu1234") {
+        document.querySelector('.sign-in').style.display = 'none';
+        document.querySelector('.welcome').style.display = 'none';
+        document.getElementById('showcase').style.display = 'block';
+        message.textContent = '';
+      } else {
+        message.textContent = "Invalid credentials! Please try again.";
+        message.style.color = "#f85a79";
+      }
+    }
+    
+    function logout() {
+      document.querySelector('.sign-in').style.display = 'flex';
+      document.querySelector('.welcome').style.display = 'flex';
+      document.getElementById('showcase').style.display = 'none';
+      document.getElementById('message').textContent = '';
+      document.getElementById('password').value = 'deu1234';
+      document.getElementById('password').type = 'password';
+      currentSlide = 0;
+      slides.style.transform = 'translateX(0)';
+    }
+    
+    function togglePassword() {
+      const passwordField = document.getElementById('password');
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+      } else {
+        passwordField.type = 'password';
+      }
+    }
+    
+    document.getElementById('password').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        login();
+      }
+    });
+  </script>
+
+</body>
+</html>
